@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <title>Flash Cards</title>
+</head>
+<body>
+    <input id="amount" name="amount" type="number" min="0" onchange="updateAmount"><p id="amount-label">Number of Cards</p>
+    <h1 id="output">Card</h1>
+    <input id="input" type="text" onchange="updateCards()" onsubmit="updateCards()" placeholder="Answer">
+    <h2 id="correct" style="color: rgb(255, 70, 70); height: 0;"> </h2>
+    <p style="position: absolute; bottom: 0;">Made by <a href="https://github.com/TinsellyCone" style="color: var(--textcolor);">TinsellyCone</a></p>
+</body>
+</html>
+<script>
+    let answers = ["NH4+","C2H3O2-","ClO3-","ClO2-","CN-","OH-","NO3-","NO2-","ClO4-","MnO4-","CO3-2","CrO4-2","Cr2O7-2","HPO4-2","O2-2","SO4-2","SO3-2","S2O3-2","PO4-3","Ammonium","Acetate","Chlorate","Chlorite","Cyanide","Hydroxide","Nitrate","Nitrite","Perchlorate","Permangenate","Carbonate","Chromate","Dichromate","Hydrogen Phosphate","Peroxide","Sulfate","Sulfite","Thiosulfate","Phosphate"];
+    let cards = ["Ammonium","Acetate","Chlorate","Chlorite","Cyanide","Hydroxide","Nitrate","Nitrite","Perchlorate","Permangenate","Carbonate","Chromate","Dichromate","Hydrogen Phosphate","Peroxide","Sulfate","Sulfite","Thiosulfate","Phosphate","NH4+","C2H3O2-","ClO3-","ClO2-","CN-","OH-","NO3-","NO2-","ClO4-","MnO4-","CO3-2","CrO4-2","Cr2O7-2","HPO4-2","O2-2","SO4-2","SO3-2","S2O3-2","PO4-3"];
+</script>
+<style>
+    body {
+        background-color: var(--bgcolor);
+        color: var(--textcolor);
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "Open Sans",Helvetica,Arial,Helmet,Freesans,sans-serif;
+        overflow: hidden;
+        --textcolor: #efefef;
+        --bgcolor: rgb(50,50,50);
+    }
+    @media (prefers-color-scheme: light) {
+        body {
+            --textcolor: #000;
+            --bgcolor: #efefef;
+        }
+        input {
+            box-shadow: 10px 10px 35px -20px #000;
+        }
+    }
+    h1 {
+        color: var(--textcolor);
+        height: 50px;
+    }
+    input[type="text"] {
+        font-family: "Open Sans",Helvetica,Arial,Helmet,Freesans,sans-serif;
+        border-radius: 100px;
+        border: 0;
+        height: 50px;
+        width: min(400px, 70vw);
+        padding-left: 20px;
+        padding-right: 20px;
+        border: 1px rgba(0, 0, 0, 0.165) solid;
+    }
+    input[type="number"] {
+        font-family: "Open Sans",Helvetica,Arial,Helmet,Freesans,sans-serif;
+        position: absolute;
+        top: 10px;
+        margin: 0 auto;
+        width: 50px;
+        border-radius: 100px;
+        border: 0;
+        text-align: center;
+        border: 1px rgba(0, 0, 0, 0.165) solid;
+        -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button {
+        appearance: none;
+        margin: 0;
+    }
+    #amount-label {
+        position: absolute;
+        top: 23px;
+        font-size: 13px;
+    }
+</style>
+<script>
+    let input = document.getElementById("input");
+    let output = document.getElementById("output");
+    let amount = document.getElementById("amount");
+    nextCard();
+    amount.setAttribute("max", cards.length);
+    amount.value = cards.length;
+    function updateCards() {
+        if (amount.value > cards.length) amount.value = cards.length;
+        for (let i = 0; i < cards.length; i++) {
+            if(output.textContent == cards[i] && input.value == answers[i]) {
+                nextCard();
+                correct.textContent = " ";
+                return;
+            }
+            if (output.textContent == cards[i]) {
+                input.value = null;
+                correct.textContent = answers[i];
+                return;
+            }
+        }
+    }
+    function nextCard() {
+        output.textContent = cards[Math.floor(Math.random() * amount.value)];
+        input.value = null;
+    }
+</script>
