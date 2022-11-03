@@ -10,16 +10,16 @@
     <title>Flash Cards</title>
 </head>
 <body>
-    <input id="amount" name="amount" type="number" min="0" onchange="updateAmount"><p id="amount-label">Number of Cards</p>
-    <h1 id="output">Card</h1>
+    <input id="amount" name="amount" type="number" min="2" onchange="if (amount.value > front.length) amount.value = front.length; if (amount.value <= 1) amount.value = 2;"><p id="amount-label">Number of Cards</p>
+    <h1 id="output">Something went wrong!</h1>
     <input id="input" type="text" onchange="updateCards()" onsubmit="updateCards()" placeholder="Answer">
     <h2 id="correct" style="color: rgb(255, 70, 70); height: 0;"> </h2>
     <p style="position: absolute; bottom: 0;">Made by <a href="https://github.com/TinsellyCone" style="color: var(--textcolor);">TinsellyCone</a></p>
 </body>
 </html>
 <script>
-    let answers = ["NH4+","C2H3O2-","ClO3-","ClO2-","CN-","OH-","NO3-","NO2-","ClO4-","MnO4-","CO3-2","CrO4-2","Cr2O7-2","HPO4-2","O2-2","SO4-2","SO3-2","S2O3-2","PO4-3","Ammonium","Acetate","Chlorate","Chlorite","Cyanide","Hydroxide","Nitrate","Nitrite","Perchlorate","Permangenate","Carbonate","Chromate","Dichromate","Hydrogen Phosphate","Peroxide","Sulfate","Sulfite","Thiosulfate","Phosphate"];
-    let cards = ["Ammonium","Acetate","Chlorate","Chlorite","Cyanide","Hydroxide","Nitrate","Nitrite","Perchlorate","Permangenate","Carbonate","Chromate","Dichromate","Hydrogen Phosphate","Peroxide","Sulfate","Sulfite","Thiosulfate","Phosphate","NH4+","C2H3O2-","ClO3-","ClO2-","CN-","OH-","NO3-","NO2-","ClO4-","MnO4-","CO3-2","CrO4-2","Cr2O7-2","HPO4-2","O2-2","SO4-2","SO3-2","S2O3-2","PO4-3"];
+    let back = ["NH4+","C2H3O2-","ClO3-","ClO2-","CN-","OH-","NO3-","NO2-","ClO4-","MnO4-","CO3-2","CrO4-2","Cr2O7-2","HPO4-2","O2-2","SO4-2","SO3-2","S2O3-2","PO4-3"];
+    let front = ["Ammonium","Acetate","Chlorate","Chlorite","Cyanide","Hydroxide","Nitrate","Nitrite","Perchlorate","Permangenate","Carbonate","Chromate","Dichromate","Hydrogen Phosphate","Peroxide","Sulfate","Sulfite","Thiosulfate","Phosphate"];
 </script>
 <style>
     body {
@@ -86,26 +86,47 @@
     let input = document.getElementById("input");
     let output = document.getElementById("output");
     let amount = document.getElementById("amount");
+    let backwards = false;
     nextCard();
-    amount.setAttribute("max", cards.length);
-    amount.value = cards.length;
+    amount.setAttribute("max", front.length);
+    amount.value = front.length;
     function updateCards() {
-        if (amount.value > cards.length) amount.value = cards.length;
-        for (let i = 0; i < cards.length; i++) {
-            if(output.textContent == cards[i] && input.value == answers[i]) {
+        for (let i = 0; i < front.length; i++) {
+            if(output.textContent == front[i] && input.value == back[i]) {
                 nextCard();
                 correct.textContent = " ";
                 return;
             }
-            if (output.textContent == cards[i]) {
+            else if (output.textContent == back[i] && input.value == front[i]) {
+                nextCard();
+                correct.textContent = " ";
+                return;
+            }
+            else if (output.textContent == front[i]) {
                 input.value = null;
-                correct.textContent = answers[i];
+                correct.textContent = back[i];
+                return;
+            }
+            else if (output.textContent == back[i]) {
+                input.value = null;
+                correct.textContent = front[i];
                 return;
             }
         }
     }
     function nextCard() {
-        output.textContent = cards[Math.floor(Math.random() * amount.value)];
+        let choice
+        do {
+            if (Math.floor(Math.random() * 2) == 1) {
+                backwards = false;
+                choice = front[Math.floor(Math.random() * amount.value)];
+            }
+            else {
+                backwards = true;
+                choice = back[Math.floor(Math.random() * amount.value)];
+            }
+        } while (choice == output.textContent)
+        output.textContent = choice;
         input.value = null;
     }
 </script>
