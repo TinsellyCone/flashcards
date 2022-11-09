@@ -19,7 +19,7 @@
 </html>
 <script>
     let back = ["NH4+","C2H3O2-","ClO3-","ClO2-","CN-","OH-","NO3-","NO2-","ClO4-","MnO4-","CO3-2","CrO4-2","Cr2O7-2","HPO4-2","O2-2","SO4-2","SO3-2","S2O3-2","PO4-3"];
-    let front = ["Ammonium","Acetate","Chlorate","Chlorite","Cyanide","Hydroxide","Nitrate","Nitrite","Perchlorate","Permangenate","Carbonate","Chromate","Dichromate","Hydrogen Phosphate","Peroxide","Sulfate","Sulfite","Thiosulfate","Phosphate"];
+    let front = ["Ammonium","Acetate","Chlorate","Chlorite","Cyanide","Hydroxide","Nitrate","Nitrite","Perchlorate","Permanganate","Carbonate","Chromate","Dichromate","Hydrogen Phosphate","Peroxide","Sulfate","Sulfite","Thiosulfate","Phosphate"];
 </script>
 <style>
     body {
@@ -119,13 +119,15 @@
         do {
             if (Math.floor(Math.random() * 2) == 1) {
                 backwards = false;
-                choice = front[Math.floor(Math.random() * amount.value)];
+                choice = Math.floor(Math.random() * amount.value);
             }
             else {
                 backwards = true;
-                choice = back[Math.floor(Math.random() * amount.value)];
+                choice = Math.floor(Math.random() * amount.value);
             }
-        } while (choice == output.textContent)
+        } while (front[choice] == output.textContent || back[choice] == output.textContent)
+        if (backwards) choice = back[choice]
+        else choice = front[choice]
         output.textContent = choice;
         input.value = null;
     }
